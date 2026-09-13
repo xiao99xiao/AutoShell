@@ -13,7 +13,7 @@
       "System-managed appearance, selection, focus, and control states."
     ],
     "rules": [
-      "Branding only: Loop Prompt uses a #142523 tile, #67E8B5 loop, and #F2FFF9 prompt shifted slightly right for optical centering. Menu bar and sidebar use monochrome 18 pt template assets (26 pt with failure indicator). Interface colors remain system semantic colors."
+      "Branding only: Loop Prompt uses a #142523 tile, #67E8B5 loop, and #F2FFF9 prompt shifted slightly right for optical centering. Menu bar and sidebar use monochrome 18 pt template assets (26 pt with failure indicator). The loop arrowhead has rounded corners and aligns to the arc endpoint tangent. Interface colors remain system semantic colors."
     ],
     "dos": [
       "Do keep status words legible in primary/secondary system text and reserve routine state color for symbols.",

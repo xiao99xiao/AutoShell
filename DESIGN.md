@@ -17,7 +17,7 @@ AutoShell is a native macOS utility in Operate mode. Its interface uses Chinese 
 
 ## App identity
 
-The Loop Prompt mark combines a circular arrow (continuous execution) with a Shell `>` prompt. The prompt is optically centered by shifting it slightly right. The App icon uses a flat dark evergreen tile (`#142523`), a mint loop (`#67E8B5`), and an off-white prompt (`#F2FFF9`). These fixed colors apply to branding assets only; interface controls retain semantic system colors.
+The Loop Prompt mark combines a circular arrow (continuous execution) with a Shell `>` prompt. The prompt is optically centered by shifting it slightly right. The loop arrowhead has rounded corners and follows the tangent at the arc endpoint for a continuous, aligned join. The App icon uses a flat dark evergreen tile (`#142523`), a mint loop (`#67E8B5`), and an off-white prompt (`#F2FFF9`). These fixed colors apply to branding assets only; interface controls retain semantic system colors.
 
 The menu bar and sidebar header use a separate 18 pt monochrome template with slightly stronger small-size geometry. macOS provides its appearance-aware tint. A 26 pt variant adds a separate exclamation indicator for failed tasks. Preserve transparent margins and the 1x/2x image representations. SVG originals and PNG exports live in `logos/export/`; `logos/preview.html` provides size and appearance comparisons.
 

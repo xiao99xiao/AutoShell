@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 18">
   <title>AutoShell menu bar template</title>
   <g id="continuous-loop" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round">
-    <path d="M12.7 3.5 A6.3 6.3 0 1 0 15.05 10.75"/>
+    <path d="M13.455 4.545 A6.3 6.3 0 1 0 15.085 10.631"/>
   </g>
-  <g id="loop-arrow" fill="#000"><path d="M10.65 2.8 L14.65 2 L13.85 6 Z"/></g>
+  <g id="loop-arrow" fill="#000"><path d="M12.111 5.323 Q11.616 5.252 11.970 4.899 L13.808 3.060 Q14.162 2.707 14.233 3.202 L14.487 4.984 Q14.586 5.677 13.893 5.578 Z"/></g>
   <g id="shell-prompt" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M7.75 6.75 L10 9 L7.75 11.25"/>
   </g>
