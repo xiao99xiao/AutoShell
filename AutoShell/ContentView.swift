@@ -7,32 +7,22 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            VStack(spacing: 0) {
-                HStack {
-                    Label("AutoShell", image: "MenuBarIcon")
-                        .font(.title3.weight(.semibold))
-                    Spacer()
-                    Button { editingTask = ShellTask() } label: { Image(systemName: "plus") }
-                        .help(String(localized: "Add Task ⌘N"))
-                        .keyboardShortcut("n")
-                        .accessibilityLabel(String(localized: "Add Task"))
-                }
-                .padding(20)
-                List(selection: $store.selectedID) {
-                    Section(String(localized: "Tasks · \(store.tasks.count)")) {
-                        ForEach(store.tasks) { task in
-                            TaskRow(task: task, runner: store.runner(for: task.id))
-                                .tag(task.id)
-                                .contextMenu {
-                                    Button(String(localized: "Start")) { store.start(task.id) }.disabled(store.runner(for: task.id).state.isActive)
-                                    Button(String(localized: "Stop")) { store.stop(task.id) }.disabled(!store.runner(for: task.id).state.isActive)
-                                    Button(String(localized: "Edit…")) { editingTask = task }.disabled(store.runner(for: task.id).state.isActive)
-                                    Button(String(localized: "Delete…"), role: .destructive) { deletingTask = task }.disabled(store.runner(for: task.id).state.isActive)
-                                }
-                        }
+            List(selection: $store.selectedID) {
+                Section(String(localized: "Tasks · \(store.tasks.count)")) {
+                    ForEach(store.tasks) { task in
+                        TaskRow(task: task, runner: store.runner(for: task.id))
+                            .tag(task.id)
+                            .contextMenu {
+                                Button(String(localized: "Start")) { store.start(task.id) }.disabled(store.runner(for: task.id).state.isActive)
+                                Button(String(localized: "Stop")) { store.stop(task.id) }.disabled(!store.runner(for: task.id).state.isActive)
+                                Button(String(localized: "Edit…")) { editingTask = task }.disabled(store.runner(for: task.id).state.isActive)
+                                Button(String(localized: "Delete…"), role: .destructive) { deletingTask = task }.disabled(store.runner(for: task.id).state.isActive)
+                            }
                     }
                 }
-                .listStyle(.sidebar)
+            }
+            .listStyle(.sidebar)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 VStack(alignment: .leading, spacing: 8) {
                     Label {
                         Text(String(localized: "Running tasks: \(store.runningCount)")).foregroundStyle(.primary)
@@ -67,6 +57,15 @@ struct ContentView: View {
                     Button(String(localized: "Add Your First Task"), systemImage: "plus") { editingTask = ShellTask() }
                         .buttonStyle(.borderedProminent)
                 }
+            }
+        }
+        .navigationTitle("AutoShell")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(String(localized: "Add Task"), systemImage: "plus") { editingTask = ShellTask() }
+                    .help(String(localized: "Add Task ⌘N"))
+                    .keyboardShortcut("n")
+                    .accessibilityIdentifier("addTask")
             }
         }
         .sheet(item: $editingTask) { task in

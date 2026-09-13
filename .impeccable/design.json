@@ -13,8 +13,9 @@
       "System-managed appearance, selection, focus, and control states."
     ],
     "rules": [
-      "Branding only: Loop Prompt uses a #142523 tile, #67E8B5 loop, and #F2FFF9 prompt shifted slightly right for optical centering. Menu bar and sidebar use monochrome 18 pt template assets (26 pt with failure indicator). The loop arrowhead has rounded corners and aligns to the arc endpoint tangent. Interface colors remain system semantic colors.",
-      "English is the source/fallback language; Simplified Chinese translations live in Localizable.xcstrings. Localize UI and app-generated messages, while preserving user commands, names, paths, and process output."
+      "Branding only: Loop Prompt uses a #142523 tile, #67E8B5 loop, and #F2FFF9 prompt shifted slightly right for optical centering. The menu bar uses monochrome 18 pt template assets (26 pt with failure indicator). The loop arrowhead has rounded corners and aligns to the arc endpoint tangent. Interface colors remain system semantic colors.",
+      "English is the source/fallback language; Simplified Chinese translations live in Localizable.xcstrings. Localize UI and app-generated messages, while preserving user commands, names, paths, and process output.",
+      "Use a SwiftUI Window scene rooted in NavigationSplitView with its automatic sidebar toggle and SidebarCommands. Add Task belongs in the standard toolbar. Open the single manager with openWindow(id:); configured tasks launch quietly and survive closing the window."
     ],
     "dos": [
       "Do keep status words legible in primary/secondary system text and reserve routine state color for symbols.",

@@ -7,16 +7,21 @@ struct AutoShellApp: App {
     @State private var store = TaskStore.shared
 
     var body: some Scene {
+        Window("AutoShell", id: ManagerWindow.id) {
+            ContentView(store: store)
+        }
+        .defaultSize(width: 1060, height: 700)
+        .defaultPosition(.center)
+        .windowResizability(.contentMinSize)
+        .windowToolbarStyle(.automatic)
+        .defaultLaunchBehavior(.suppressed)
+        .restorationBehavior(.disabled)
+        .commands { SidebarCommands() }
+
         MenuBarExtra {
             MenuContent(store: store)
         } label: {
-            Label {
-                Text(String(localized: "AutoShell · Running: \(store.runningCount)"))
-            } icon: {
-                Image(store.failedCount > 0 ? "MenuBarIconAlert" : "MenuBarIcon")
-                    .renderingMode(.template)
-            }
-            .accessibilityLabel(String(localized: "AutoShell · Running: \(store.runningCount) · Failed: \(store.failedCount)"))
+            MenuBarStatusLabel(store: store, delegate: delegate)
         }
         .menuBarExtraStyle(.menu)
     }
@@ -24,31 +29,20 @@ struct AutoShellApp: App {
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    private var window: NSWindow?
+    private var openManager: (() -> Void)?
+    private var didStart = false
 
-    func applicationDidFinishLaunching(_ notification: Notification) {
+    func configureWindowOpening(_ action: @escaping () -> Void) {
+        openManager = action
+        guard !didStart else { return }
+        didStart = true
         TaskStore.shared.loadAndStart()
-        if TaskStore.shared.tasks.isEmpty || TaskStore.shared.errorMessage != nil { showManager() }
-        NotificationCenter.default.addObserver(self, selector: #selector(showManager), name: .showTaskManager, object: nil)
-    }
-
-    @objc func showManager() {
-        if window == nil {
-            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1060, height: 700), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
-            window.title = "AutoShell"
-            window.contentView = NSHostingView(rootView: ContentView(store: TaskStore.shared))
-            window.minSize = NSSize(width: 850, height: 560)
-            window.isReleasedWhenClosed = false
-            window.center()
-            self.window = window
-        }
-        window?.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        if TaskStore.shared.tasks.isEmpty || TaskStore.shared.errorMessage != nil { action() }
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        showManager()
-        return true
+        openManager?()
+        return false
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
@@ -65,11 +59,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-extension Notification.Name {
-    static let showTaskManager = Notification.Name("showTaskManager")
+enum ManagerWindow {
+    static let id = "task-manager"
+}
+
+private struct MenuBarStatusLabel: View {
+    @Environment(\.openWindow) private var openWindow
+    var store: TaskStore
+    var delegate: AppDelegate
+
+    var body: some View {
+        Label {
+            Text(String(localized: "AutoShell · Running: \(store.runningCount)"))
+        } icon: {
+            Image(store.failedCount > 0 ? "MenuBarIconAlert" : "MenuBarIcon")
+                .renderingMode(.template)
+        }
+        .accessibilityLabel(String(localized: "AutoShell · Running: \(store.runningCount) · Failed: \(store.failedCount)"))
+        .task {
+            delegate.configureWindowOpening {
+                openWindow(id: ManagerWindow.id)
+                NSApp.activate()
+            }
+        }
+    }
 }
 
 struct MenuContent: View {
+    @Environment(\.openWindow) private var openWindow
     var store: TaskStore
 
     var body: some View {
@@ -82,7 +99,7 @@ struct MenuContent: View {
                 Menu("\(task.name) · \(runner.state.label)") {
                     Button(String(localized: "View Logs and Details")) {
                         store.selectedID = task.id
-                        NotificationCenter.default.post(name: .showTaskManager, object: nil)
+                        showManager()
                     }
                     if runner.state.isActive {
                         Button(String(localized: "Stop")) { store.stop(task.id) }.disabled(runner.state == .stopping)
@@ -94,12 +111,17 @@ struct MenuContent: View {
             }
         }
         Divider()
-        Button(String(localized: "Manage Tasks…")) { NotificationCenter.default.post(name: .showTaskManager, object: nil) }
+        Button(String(localized: "Manage Tasks…")) { showManager() }
             .keyboardShortcut("o")
         Button(String(localized: "Start All")) { store.startAll() }.disabled(store.tasks.isEmpty || store.isQuitting)
         Button(String(localized: "Stop All")) { store.stopAll() }.disabled(!store.hasActiveTasks)
         Divider()
         Text(String(localized: "Tasks keep running when the window closes"))
         Button(String(localized: "Quit AutoShell and Stop Tasks")) { NSApp.terminate(nil) }.keyboardShortcut("q")
+    }
+
+    private func showManager() {
+        openWindow(id: ManagerWindow.id)
+        NSApp.activate()
     }
 }
