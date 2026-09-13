@@ -125,6 +125,10 @@ final class TaskRunner {
     }
 
     func markWaiting() { state = .waiting }
+    func logScheduledRestart() {
+        let message = String(localized: "Scheduled restart is due.")
+        append(Data("\n[AutoShell] \(message)\n".utf8))
+    }
     func markFailure(_ error: Error) {
         state = .failed
         append(Data("\n[AutoShell] \(error.localizedDescription)\n".utf8))

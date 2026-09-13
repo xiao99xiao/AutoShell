@@ -9,8 +9,18 @@ struct ShellTask: Codable, Identifiable, Equatable {
     var environment = ""
     var startsAutomatically = true
     var restartsOnFailure = false
+    var restartInterval: TimeInterval?
 
     var expandedDirectory: String { (directory as NSString).expandingTildeInPath }
+
+    var restartIntervalDescription: String? {
+        guard let restartInterval else { return nil }
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.day, .hour, .minute, .second]
+        formatter.unitsStyle = .short
+        formatter.maximumUnitCount = 2
+        return formatter.string(from: restartInterval)
+    }
 
     func validated() throws -> ShellTask {
         var result = self
@@ -30,7 +40,26 @@ struct ShellTask: Codable, Identifiable, Equatable {
             throw TaskError.message(String(localized: "The shell must be an absolute path to an executable file."))
         }
         _ = try environmentValues()
+        try Self.validateRestartInterval(restartInterval)
         return result
+    }
+
+    static func validateRestartInterval(_ interval: TimeInterval?) throws {
+        guard let interval else { return }
+        guard interval.isFinite, interval >= 1, Date().addingTimeInterval(interval) < .distantFuture else {
+            throw TaskError.message(String(localized: "Enter a valid interval of at least 1 second."))
+        }
+    }
+
+    static func parseRestartInterval(_ text: String, unit: TimeInterval, locale: Locale = .current) throws -> TimeInterval {
+        let normalized = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: locale.decimalSeparator ?? ".", with: ".")
+        guard let amount = Double(normalized) else {
+            throw TaskError.message(String(localized: "Enter a valid interval of at least 1 second."))
+        }
+        let interval = amount * unit
+        try validateRestartInterval(interval)
+        return interval
     }
 
     func environmentValues() throws -> [String: String] {

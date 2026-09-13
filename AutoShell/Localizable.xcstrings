@@ -177,6 +177,22 @@
         }
       }
     },
+    "Automatic Restart": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic Restart"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "定时重启"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "en": {
@@ -289,6 +305,22 @@
         }
       }
     },
+    "Configure…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configure…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置…"
+          }
+        }
+      }
+    },
     "Copy Log": {
       "localizations": {
         "en": {
@@ -365,6 +397,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "日志写入失败：%@"
+          }
+        }
+      }
+    },
+    "Days": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "天"
           }
         }
       }
@@ -577,6 +625,22 @@
         }
       }
     },
+    "Enter a valid interval of at least 1 second.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a valid interval of at least 1 second."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入至少 1 秒的有效间隔。"
+          }
+        }
+      }
+    },
     "Enter one environment variable per line as KEY=value.": {
       "localizations": {
         "en": {
@@ -621,6 +685,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "环境变量（每行 KEY=value）"
+          }
+        }
+      }
+    },
+    "Every %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每隔 %@"
           }
         }
       }
@@ -685,6 +765,38 @@
           "stringUnit": {
             "state": "translated",
             "value": "例如 ./run.sh。使用前台常驻命令，不要添加 & 或 nohup。"
+          }
+        }
+      }
+    },
+    "Hours": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hours"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小时"
+          }
+        }
+      }
+    },
+    "Interval": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interval"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "间隔"
           }
         }
       }
@@ -785,6 +897,22 @@
         }
       }
     },
+    "Minutes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minutes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分钟"
+          }
+        }
+      }
+    },
     "More Actions": {
       "localizations": {
         "en": {
@@ -797,6 +925,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "更多操作"
+          }
+        }
+      }
+    },
+    "Next restart: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next restart: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下次重启：%@"
           }
         }
       }
@@ -861,6 +1005,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "好"
+          }
+        }
+      }
+    },
+    "Off": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已关闭"
           }
         }
       }
@@ -961,6 +1121,22 @@
         }
       }
     },
+    "Restart every": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restart every"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重启间隔"
+          }
+        }
+      }
+    },
     "Restart on failure": {
       "localizations": {
         "en": {
@@ -977,6 +1153,22 @@
         }
       }
     },
+    "Restart periodically": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restart periodically"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按间隔重复重启"
+          }
+        }
+      }
+    },
     "Resume Display": {
       "localizations": {
         "en": {
@@ -989,6 +1181,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "继续显示"
+          }
+        }
+      }
+    },
+    "Resumes when the task starts": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resumes when the task starts"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任务启动后恢复计时"
           }
         }
       }
@@ -1057,6 +1265,22 @@
         }
       }
     },
+    "Save": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        }
+      }
+    },
     "Save Task": {
       "localizations": {
         "en": {
@@ -1089,6 +1313,22 @@
         }
       }
     },
+    "Scheduled restart is due.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scheduled restart is due."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已到定时重启时间。"
+          }
+        }
+      }
+    },
     "Search logs": {
       "localizations": {
         "en": {
@@ -1101,6 +1341,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "搜索日志"
+          }
+        }
+      }
+    },
+    "Seconds": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seconds"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "秒"
           }
         }
       }
@@ -1377,6 +1633,22 @@
         }
       }
     },
+    "Stopping the task pauses the schedule. Starting it resumes the schedule. Unexpected exits follow the task’s failure settings. An overdue restart runs once after your Mac wakes.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopping the task pauses the schedule. Starting it resumes the schedule. Unexpected exits follow the task’s failure settings. An overdue restart runs once after your Mac wakes."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止任务会暂停计时，启动任务后恢复。意外退出仍按任务的失败处理设置执行。睡眠期间到期的重启会在 Mac 唤醒后执行一次。"
+          }
+        }
+      }
+    },
     "Stopping; remaining processes will be forced to quit after 5 seconds.": {
       "localizations": {
         "en": {
@@ -1489,6 +1761,22 @@
         }
       }
     },
+    "The interval starts when you save these settings or start the task. Each restart waits for the current process to stop before starting a new one.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The interval starts when you save these settings or start the task. Each restart waits for the current process to stop before starting a new one."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存设置或启动任务时开始计时。每次重启都会等待当前进程结束，再启动新进程。"
+          }
+        }
+      }
+    },
     "The shell must be an absolute path to an executable file.": {
       "localizations": {
         "en": {
@@ -1517,6 +1805,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "工作目录不存在，请重新选择。"
+          }
+        }
+      }
+    },
+    "Time Unit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time Unit"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "时间单位"
           }
         }
       }

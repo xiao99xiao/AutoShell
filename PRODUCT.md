@@ -11,6 +11,7 @@ A personal utility for keeping multiple long-running shell commands, such as loc
 - User adds AutoShell to macOS Login Items manually.
 - Tasks may start automatically when AutoShell opens.
 - Menu bar access, task management, manual start/stop/restart, and detailed logs.
+- Per-task periodic restart intervals, configurable while running, with a visible next restart time.
 - Unexpected exits show failure by default; user explicitly selected manual restart.
 
 ## Implementation decisions

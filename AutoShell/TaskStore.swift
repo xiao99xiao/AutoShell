@@ -8,6 +8,8 @@ final class TaskStore {
     var selectedID: UUID?
     var errorMessage: String?
     private(set) var isQuitting = false
+    private(set) var scheduledRestarts: [UUID: Date] = [:]
+    @ObservationIgnored private var restartTimer: Timer?
     @ObservationIgnored private var runners: [UUID: TaskRunner] = [:]
     @ObservationIgnored private var pendingRestarts: [UUID: Task<Void, Never>] = [:]
     @ObservationIgnored private var failureCounts: [UUID: Int] = [:]
@@ -79,11 +81,15 @@ final class TaskStore {
         let runner = runner(for: id)
         guard runner.pid == nil else { return }
         cancelRestart(id)
-        do { try runner.start(task) }
+        do {
+            try runner.start(task)
+            if let interval = task.restartInterval { scheduleRestart(id, after: interval) }
+        }
         catch { runner.markFailure(error) }
     }
 
     func stop(_ id: UUID) {
+        cancelScheduledRestart(id)
         cancelRestart(id)
         failureCounts[id] = nil
         runner(for: id).stop()
@@ -105,6 +111,53 @@ final class TaskStore {
     func startAll() { for task in tasks where !runner(for: task.id).state.isActive { start(task.id) } }
     func stopAll() { for task in tasks { stop(task.id) } }
     func prepareToQuit() { isQuitting = true; stopAll() }
+
+    /// Changes only the restart policy, so it is safe while the command is running.
+    func setRestartInterval(_ id: UUID, interval: TimeInterval?) throws {
+        guard !isQuitting, let index = tasks.firstIndex(where: { $0.id == id }) else { return }
+        try ShellTask.validateRestartInterval(interval)
+        var updated = tasks
+        updated[index].restartInterval = interval
+        try persist(updated)
+        tasks = updated
+        cancelScheduledRestart(id)
+        if let interval, runner(for: id).state == .running { scheduleRestart(id, after: interval) }
+    }
+
+    private func scheduleRestart(_ id: UUID, after interval: TimeInterval) {
+        scheduledRestarts[id] = Date().addingTimeInterval(interval)
+        if restartTimer == nil {
+            // Wall-clock deadlines include sleep; overdue schedules run once on wake.
+            let timer = Timer(timeInterval: 1, repeats: true) { [weak self] timer in
+                guard let self else { timer.invalidate(); return }
+                MainActor.assumeIsolated {
+                    self.performScheduledRestarts()
+                }
+            }
+            timer.tolerance = 0.1
+            restartTimer = timer
+            RunLoop.main.add(timer, forMode: .common)
+        }
+    }
+
+    private func cancelScheduledRestart(_ id: UUID) {
+        scheduledRestarts.removeValue(forKey: id)
+        if scheduledRestarts.isEmpty {
+            restartTimer?.invalidate()
+            restartTimer = nil
+        }
+    }
+
+    private func performScheduledRestarts() {
+        let now = Date()
+        let due = scheduledRestarts.filter { $0.value <= now }.map(\.key)
+        for id in due {
+            cancelScheduledRestart(id)
+            guard !isQuitting, runner(for: id).state == .running else { continue }
+            runner(for: id).logScheduledRestart()
+            restart(id)
+        }
+    }
 
     func openTerminalLog(_ id: UUID) {
         let logURL = runner(for: id).logURL
@@ -134,6 +187,7 @@ final class TaskStore {
     }
 
     private func didExit(_ id: UUID, failed: Bool) {
+        cancelScheduledRestart(id)
         guard failed, !isQuitting, let task = tasks.first(where: { $0.id == id }), task.restartsOnFailure else { return }
         let runner = runner(for: id)
         if let startedAt = runner.startedAt, Date().timeIntervalSince(startedAt) > 60 { failureCounts[id] = 0 }

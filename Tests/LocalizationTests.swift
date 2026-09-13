@@ -16,6 +16,10 @@ struct LocalizationTests {
         try check(RunState.failed.label == (chinese ? "运行失败" : "Failed"), "runtime task status")
         try check(String(localized: "Add Task") == (chinese ? "添加任务" : "Add Task"), "editor title")
         try check(String(localized: "Manage Tasks…") == (chinese ? "管理任务…" : "Manage Tasks…"), "menu label")
+        try check(String(localized: "Automatic Restart") == (chinese ? "定时重启" : "Automatic Restart"), "periodic restart settings label")
+        try check(String(localized: "Scheduled restart is due.") == (chinese ? "已到定时重启时间。" : "Scheduled restart is due."), "scheduled restart log message")
+        let nextDate = "2030/01/01 12:30"
+        try check(String(localized: "Next restart: \(nextDate)") == (chinese ? "下次重启：2030/01/01 12:30" : "Next restart: 2030/01/01 12:30"), "scheduled restart date interpolation")
         for count in [0, 1, 5] {
             let message = String(localized: "Running tasks: \(count)")
             try check(message == (chinese ? "\(count) 个任务运行中" : "Running tasks: \(count)"), "interpolated count \(count)")

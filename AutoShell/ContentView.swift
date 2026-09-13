@@ -115,6 +115,7 @@ struct TaskDetailView: View {
     var store: TaskStore
     var edit: () -> Void
     var delete: () -> Void
+    @State private var showingRestartSchedule = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -174,12 +175,36 @@ struct TaskDetailView: View {
                 }
                 .padding(14)
                 .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 8))
+                HStack(alignment: .center, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(String(localized: "Automatic Restart"), systemImage: "clock.arrow.circlepath")
+                            .font(.callout)
+                        if let interval = task.restartIntervalDescription {
+                            Text(String(localized: "Every \(interval)"))
+                            if let date = store.scheduledRestarts[task.id] {
+                                Text(String(localized: "Next restart: \(date.formatted(date: .abbreviated, time: .standard))"))
+                            } else {
+                                Text(String(localized: "Resumes when the task starts"))
+                            }
+                        } else {
+                            Text(String(localized: "Off"))
+                        }
+                    }
+                    .font(.caption).foregroundStyle(.secondary)
+                    Spacer(minLength: 0)
+                    Button(String(localized: "Configure…")) { showingRestartSchedule = true }
+                        .disabled(store.isQuitting)
+                        .accessibilityIdentifier("configureRestartSchedule")
+                }
             }
             .padding(24)
             Divider()
             LogPanel(runner: runner, terminal: { store.openTerminalLog(task.id) })
         }
         .background(.background)
+        .sheet(isPresented: $showingRestartSchedule) {
+            RestartScheduleEditor(task: task) { try store.setRestartInterval(task.id, interval: $0) }
+        }
     }
 }
 

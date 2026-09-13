@@ -41,6 +41,14 @@ UI labels, menus, accessibility text, validation errors, and AutoShell-generated
 - Environment variables use one `KEY=value` per line. Values are literal: do not add shell quotes or expect variable expansion. Configuration is stored locally in plain text with owner-only access.
 - Standard input comes from `/dev/null`. Run password prompts, interactive TUIs, and commands requiring a real terminal in Terminal. Some tools buffer output; use their unbuffered option if needed, such as Python's `-u`.
 
+## Periodic restarts
+
+Select a task, then choose **Configure…** beside **Automatic Restart**. Enable **Restart periodically** and enter an interval in seconds, minutes, hours, or days (at least one second). You can change or disable the schedule while the task is running. The interval is saved for each task.
+
+Saving the setting or starting the task begins a fresh interval. When it is due, AutoShell stops the current process group, waits for it to exit, then starts a new process and resets the interval. The task details show the next restart time, and the log records each scheduled restart.
+
+Closing the window keeps the schedule running. Stopping a task or quitting AutoShell cancels its countdown; the saved interval resumes when the task starts again. Unexpected exits still follow **Restart on failure**, which is off by default. AutoShell must remain running; it does not wake your Mac. After sleep, an overdue restart runs once, followed by a fresh interval.
+
 ## Logs
 
 Standard output and standard error are combined. The app displays the latest 128 KB and supports search, pause display, follow output, and copy. Each task keeps a current log and one archive, each up to 5 MB.
