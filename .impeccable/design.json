@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-13T03:26:01Z",
+  "title": "Design System: AutoShell",
+  "extensions": {},
+  "components": [],
+  "narrative": {
+    "overview": "AutoShell is a native macOS utility in Operate mode. Its interface uses Chinese copy, system typography and colors, SF Symbols, and standard macOS controls. The visual character is restrained and practical, with task status and readable output taking priority.",
+    "keyCharacteristics": [
+      "Native sidebar navigation and focused task details.",
+      "Explicit status words paired with recognizable symbols.",
+      "Logs occupy the remaining detail height.",
+      "System-managed appearance, selection, focus, and control states."
+    ],
+    "rules": [],
+    "dos": [
+      "Do keep status words legible in primary/secondary system text and reserve routine state color for symbols.",
+      "Do preserve selectable logs, native keyboard behavior, and concise Chinese action labels.",
+      "Do keep output prominent when adding task-management controls."
+    ],
+    "donts": [
+      "Don't introduce fixed color replacements, custom control chrome, decorative dashboards, or gratuitous animation into this utility.",
+      "Don't treat implementation intent as verification: the recorded visual review covers the inspected running-task and compact-window screenshots, not every state or system appearance."
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+---
+name: AutoShell
+description: Native macOS task management with clear status and readable logs.
+---
+
+# Design System: AutoShell
+
+## Overview
+
+AutoShell is a native macOS utility in Operate mode. Its interface uses Chinese copy, system typography and colors, SF Symbols, and standard macOS controls. The visual character is restrained and practical, with task status and readable output taking priority.
+
+**Key Characteristics:**
+- Native sidebar navigation and focused task details.
+- Explicit status words paired with recognizable symbols.
+- Logs occupy the remaining detail height.
+- System-managed appearance, selection, focus, and control states.
+
+## Colors
+
+Use semantic SwiftUI and AppKit colors so surfaces and text follow system appearance; do not replace them with fixed light-mode hex values.
+
+- Primary actions use the system accent through bordered prominent buttons.
+- Detail status words and the sidebar running count use `.primary`. Sidebar row status and supporting metadata use `.secondary`.
+- Status symbols use green for running/succeeded, red for failed, orange for waiting/stopping, and secondary for stopped. State remains understandable from its text and symbol without color.
+- The detail uses `.background`; the command summary uses a faint quaternary fill. Logs use AppKit `.textColor` and `.textBackgroundColor`.
+- Editor validation and log errors use red text. This is distinct from the symbol-only color treatment for routine task status.
+
+## Typography
+
+Use the macOS system font and semantic SwiftUI text styles: semibold title for the task name, semibold title2 for the editor, headline for logs, body for task rows, and callout/caption for status and metadata. Commands and environment-variable editors use system monospace. Log output uses regular system monospace at 12 pt. Process IDs use monospaced digits; paths retain normal system text.
+
+## Layout
+
+The management window opens with a 1060 × 700 pt content rectangle. Its configured window minimum is 850 × 560 pt, with a SwiftUI content minimum of 830 × 530 pt. The navigation sidebar allows 220–310 pt and prefers 250 pt.
+
+The sidebar contains an add action, task list, running count, and login-settings link. The selected task detail stacks its name/status, lifecycle actions, command summary, and log panel. Main detail insets are 24 pt; sidebar header/footer insets are 20 pt. The log area absorbs available vertical space. Long log lines scroll horizontally; commands show up to three lines and directory labels truncate in the middle with a full-path help tooltip.
+
+The editor is a fixed-width sheet (580 pt), growing from 590 to 750 pt high when advanced settings expand. No web breakpoints or mobile layout are defined.
+
+## Elevation & Depth
+
+System window, sheet, menu, and control treatments provide depth. Inside the content, dividers and subtle tonal grouping establish sections. The implementation adds no custom shadows or motion choreography.
+
+## Shapes
+
+Native controls retain system shapes. The command summary has an 8 pt corner radius and 14 pt padding; the command editor background has a 6 pt radius. SF Symbols carry action and state meaning without decorative illustration.
+
+## Components
+
+- **Navigation:** A native sidebar list displays task names, state words/symbols, and an automatic-start indicator. Selection and keyboard focus use system behavior.
+- **Actions:** Start and save use bordered prominent buttons. Stop/restart are available while active and disabled during stopping. Editing and deletion are disabled while active; deletion uses a confirmation alert.
+- **Editor:** A grouped form holds name, command, directory, startup/restart toggles, and an advanced disclosure for shell/environment fields. Cancel/save use standard keyboard actions; inline validation keeps the sheet open. Footer copy states that saving does not immediately run commands.
+- **Logs:** Selectable, read-only AppKit text supports search by matching lines, follow output, pause/resume display, copy of visible text, and Terminal access. Pausing display leaves recording active, explained by help/footer text. Separate empty-output and no-search-results states use native unavailable views.
+- **Empty selection:** A native unavailable view explains task creation or prompts selection, with an add-task action.
+- **Menu bar:** Native menus show running count, each task's state, detail access, lifecycle actions, and an explicitly labeled quit-and-stop action.
+- **Accessibility:** Icon-only add/copy actions have accessible labels; task rows combine their elements. Retain system focus and disabled states and text labels alongside status symbols.
+
+## Do's and Don'ts
+
+- **Do** keep status words legible in primary/secondary system text and reserve routine state color for symbols.
+- **Do** preserve selectable logs, native keyboard behavior, and concise Chinese action labels.
+- **Do** keep output prominent when adding task-management controls.
+- **Don't** introduce fixed color replacements, custom control chrome, decorative dashboards, or gratuitous animation into this utility.
+- **Don't** treat implementation intent as verification: the recorded visual review covers the inspected running-task and compact-window screenshots, not every state or system appearance.
