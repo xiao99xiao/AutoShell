@@ -5,7 +5,7 @@
   "extensions": {},
   "components": [],
   "narrative": {
-    "overview": "AutoShell is a native macOS utility in Operate mode. Its interface uses Chinese copy, system typography and colors, SF Symbols, and standard macOS controls. The visual character is restrained and practical, with task status and readable output taking priority.",
+    "overview": "AutoShell is a native macOS utility in Operate mode. Its interface uses English source copy with a Simplified Chinese localization, system typography and colors, SF Symbols, and standard macOS controls. The visual character is restrained and practical, with task status and readable output taking priority.",
     "keyCharacteristics": [
       "Native sidebar navigation and focused task details.",
       "Explicit status words paired with recognizable symbols.",
@@ -13,11 +13,12 @@
       "System-managed appearance, selection, focus, and control states."
     ],
     "rules": [
-      "Branding only: Loop Prompt uses a #142523 tile, #67E8B5 loop, and #F2FFF9 prompt shifted slightly right for optical centering. Menu bar and sidebar use monochrome 18 pt template assets (26 pt with failure indicator). The loop arrowhead has rounded corners and aligns to the arc endpoint tangent. Interface colors remain system semantic colors."
+      "Branding only: Loop Prompt uses a #142523 tile, #67E8B5 loop, and #F2FFF9 prompt shifted slightly right for optical centering. Menu bar and sidebar use monochrome 18 pt template assets (26 pt with failure indicator). The loop arrowhead has rounded corners and aligns to the arc endpoint tangent. Interface colors remain system semantic colors.",
+      "English is the source/fallback language; Simplified Chinese translations live in Localizable.xcstrings. Localize UI and app-generated messages, while preserving user commands, names, paths, and process output."
     ],
     "dos": [
       "Do keep status words legible in primary/secondary system text and reserve routine state color for symbols.",
-      "Do preserve selectable logs, native keyboard behavior, and concise Chinese action labels.",
+      "Do preserve selectable logs, native keyboard behavior, and concise localized action labels.",
       "Do keep output prominent when adding task-management controls."
     ],
     "donts": [

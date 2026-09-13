@@ -32,7 +32,7 @@ final class TaskStore {
         do {
             if FileManager.default.fileExists(atPath: url.path) {
                 tasks = try JSONDecoder().decode([ShellTask].self, from: Data(contentsOf: url))
-                guard Set(tasks.map(\.id)).count == tasks.count else { throw TaskError.message("任务 ID 重复。") }
+                guard Set(tasks.map(\.id)).count == tasks.count else { throw TaskError.message(String(localized: "Duplicate task IDs.")) }
             }
             for task in tasks { _ = runner(for: task.id) }
             selectedID = tasks.first?.id
@@ -40,7 +40,7 @@ final class TaskStore {
         } catch {
             tasks = []
             configurationReadable = false
-            errorMessage = "无法读取任务配置，原文件已保留。请检查 \(url.path)：\(error.localizedDescription)"
+            errorMessage = String(localized: "Could not read task configuration. The original file was preserved. Check \(url.path): \(error.localizedDescription)")
         }
     }
 
@@ -54,7 +54,7 @@ final class TaskStore {
 
     func save(_ task: ShellTask) throws {
         let task = try task.validated()
-        guard !runner(for: task.id).state.isActive else { throw TaskError.message("请先停止任务，再修改配置。") }
+        guard !runner(for: task.id).state.isActive else { throw TaskError.message(String(localized: "Stop the task before editing its configuration.")) }
         var updated = tasks
         if let index = updated.firstIndex(where: { $0.id == task.id }) { updated[index] = task }
         else { updated.append(task) }
@@ -113,11 +113,13 @@ final class TaskStore {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
             let script = directory.appendingPathComponent("\(id.uuidString).command")
             let quote = "'" + logURL.path.replacingOccurrences(of: "'", with: "'\\''") + "'"
-            let text = "#!/bin/sh\nprintf '%s\\n' 'AutoShell · 实时日志（只读，按 Control-C 结束查看）'\nexec /usr/bin/tail -n 200 -F \(quote)\n"
+            let header = String(localized: "AutoShell · Live log (read-only; press Control-C to stop viewing)")
+            let quotedHeader = "'" + header.replacingOccurrences(of: "'", with: "'\\''") + "'"
+            let text = "#!/bin/sh\nprintf '%s\\n' \(quotedHeader)\nexec /usr/bin/tail -n 200 -F \(quote)\n"
             try text.write(to: script, atomically: true, encoding: .utf8)
             try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: script.path)
             guard let terminal = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Terminal") else {
-                throw TaskError.message("未找到 Terminal。")
+                throw TaskError.message(String(localized: "Terminal could not be found."))
             }
             NSWorkspace.shared.open([script], withApplicationAt: terminal, configuration: .init()) { _, error in
                 if let error { Task { @MainActor in self.errorMessage = error.localizedDescription } }
@@ -128,7 +130,7 @@ final class TaskStore {
     func revealLogs(_ id: UUID) {
         let url = runner(for: id).logURL
         if FileManager.default.fileExists(atPath: url.path) { NSWorkspace.shared.activateFileViewerSelecting([url]) }
-        else { errorMessage = "任务还没有日志。启动一次任务后即可查看日志文件。" }
+        else { errorMessage = String(localized: "No log file yet. Start the task once to create one.") }
     }
 
     private func didExit(_ id: UUID, failed: Bool) {
@@ -151,7 +153,7 @@ final class TaskStore {
     }
 
     private func persist(_ tasks: [ShellTask]) throws {
-        guard configurationReadable else { throw TaskError.message("原配置无法读取，已阻止覆盖。请先修复 tasks.json 并重启 App。") }
+        guard configurationReadable else { throw TaskError.message(String(localized: "The existing configuration cannot be read and will not be overwritten. Repair tasks.json and restart AutoShell.")) }
         try FileManager.default.createDirectory(at: rootURL, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]

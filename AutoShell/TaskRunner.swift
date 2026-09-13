@@ -95,7 +95,8 @@ final class TaskRunner {
         state = .running
         wasStopped = false
         stopDeadline = nil
-        append(Data("\n── \(Date().formatted()) · 启动 PID \(child) ──\n".utf8))
+        let message = String(localized: "Started PID \(child)")
+        append(Data("\n── \(Date().formatted()) · \(message) ──\n".utf8))
         let source = DispatchSource.makeReadSource(fileDescriptor: readFD, queue: .main)
         source.setEventHandler { [weak self] in
             MainActor.assumeIsolated { self?.drain() }
@@ -119,7 +120,8 @@ final class TaskRunner {
         state = .stopping
         stopDeadline = Date().addingTimeInterval(5)
         kill(-pid, SIGTERM)
-        append(Data("\n[AutoShell] 正在停止；5 秒后仍未退出将强制结束。\n".utf8))
+        let message = String(localized: "Stopping; remaining processes will be forced to quit after 5 seconds.")
+        append(Data("\n[AutoShell] \(message)\n".utf8))
     }
 
     func markWaiting() { state = .waiting }
@@ -151,7 +153,8 @@ final class TaskRunner {
         exitCode = code
         let failed = !wasStopped && code != 0
         state = wasStopped ? .stopped : (failed ? .failed : .succeeded)
-        append(Data("\n[AutoShell] \(state.label) · 退出码 \(code)\n".utf8))
+        let message = String(localized: "\(state.label) · Exit code \(code)")
+        append(Data("\n[AutoShell] \(message)\n".utf8))
         try? diskHandle?.close()
         diskHandle = nil
         onExit?(failed)
@@ -176,7 +179,7 @@ final class TaskRunner {
         try FileManager.default.createDirectory(at: logURL.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
         if !FileManager.default.fileExists(atPath: logURL.path) {
             guard FileManager.default.createFile(atPath: logURL.path, contents: nil, attributes: [.posixPermissions: 0o600]) else {
-                throw TaskError.message("无法创建日志文件，请检查目录权限。")
+                throw TaskError.message(String(localized: "Could not create the log file. Check directory permissions."))
             }
         }
         diskHandle = try FileHandle(forWritingTo: logURL)
@@ -201,7 +204,7 @@ final class TaskRunner {
             }
             try diskHandle?.write(contentsOf: data)
             diskBytes += UInt64(data.count)
-        } catch { logError = "日志写入失败：\(error.localizedDescription)" }
+        } catch { logError = String(localized: "Could not write the log: \(error.localizedDescription)") }
     }
 
     private func publishLog() {

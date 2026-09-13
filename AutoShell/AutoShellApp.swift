@@ -11,12 +11,12 @@ struct AutoShellApp: App {
             MenuContent(store: store)
         } label: {
             Label {
-                Text("AutoShell · \(store.runningCount) 个运行中")
+                Text(String(localized: "AutoShell · Running: \(store.runningCount)"))
             } icon: {
                 Image(store.failedCount > 0 ? "MenuBarIconAlert" : "MenuBarIcon")
                     .renderingMode(.template)
             }
-            .accessibilityLabel("AutoShell · \(store.runningCount) 个运行中 · \(store.failedCount) 个失败")
+            .accessibilityLabel(String(localized: "AutoShell · Running: \(store.runningCount) · Failed: \(store.failedCount)"))
         }
         .menuBarExtraStyle(.menu)
     }
@@ -73,33 +73,33 @@ struct MenuContent: View {
     var store: TaskStore
 
     var body: some View {
-        Text("AutoShell · \(store.runningCount) 个运行中")
+        Text(String(localized: "AutoShell · Running: \(store.runningCount)"))
         if store.tasks.isEmpty {
-            Text("还没有任务")
+            Text(String(localized: "No tasks yet"))
         } else {
             ForEach(store.tasks) { task in
                 let runner = store.runner(for: task.id)
                 Menu("\(task.name) · \(runner.state.label)") {
-                    Button("查看日志与详情") {
+                    Button(String(localized: "View Logs and Details")) {
                         store.selectedID = task.id
                         NotificationCenter.default.post(name: .showTaskManager, object: nil)
                     }
                     if runner.state.isActive {
-                        Button("停止") { store.stop(task.id) }.disabled(runner.state == .stopping)
-                        Button("重新启动") { store.restart(task.id) }.disabled(runner.state == .stopping)
+                        Button(String(localized: "Stop")) { store.stop(task.id) }.disabled(runner.state == .stopping)
+                        Button(String(localized: "Restart")) { store.restart(task.id) }.disabled(runner.state == .stopping)
                     } else {
-                        Button("启动") { store.start(task.id) }
+                        Button(String(localized: "Start")) { store.start(task.id) }
                     }
                 }
             }
         }
         Divider()
-        Button("管理任务…") { NotificationCenter.default.post(name: .showTaskManager, object: nil) }
+        Button(String(localized: "Manage Tasks…")) { NotificationCenter.default.post(name: .showTaskManager, object: nil) }
             .keyboardShortcut("o")
-        Button("启动全部") { store.startAll() }.disabled(store.tasks.isEmpty || store.isQuitting)
-        Button("停止全部") { store.stopAll() }.disabled(!store.hasActiveTasks)
+        Button(String(localized: "Start All")) { store.startAll() }.disabled(store.tasks.isEmpty || store.isQuitting)
+        Button(String(localized: "Stop All")) { store.stopAll() }.disabled(!store.hasActiveTasks)
         Divider()
-        Text("关闭窗口后，任务继续运行")
-        Button("退出 AutoShell 并停止任务") { NSApp.terminate(nil) }.keyboardShortcut("q")
+        Text(String(localized: "Tasks keep running when the window closes"))
+        Button(String(localized: "Quit AutoShell and Stop Tasks")) { NSApp.terminate(nil) }.keyboardShortcut("q")
     }
 }

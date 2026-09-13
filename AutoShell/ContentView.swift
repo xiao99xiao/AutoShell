@@ -13,21 +13,21 @@ struct ContentView: View {
                         .font(.title3.weight(.semibold))
                     Spacer()
                     Button { editingTask = ShellTask() } label: { Image(systemName: "plus") }
-                        .help("添加任务 ⌘N")
+                        .help(String(localized: "Add Task ⌘N"))
                         .keyboardShortcut("n")
-                        .accessibilityLabel("添加任务")
+                        .accessibilityLabel(String(localized: "Add Task"))
                 }
                 .padding(20)
                 List(selection: $store.selectedID) {
-                    Section("任务 · \(store.tasks.count)") {
+                    Section(String(localized: "Tasks · \(store.tasks.count)")) {
                         ForEach(store.tasks) { task in
                             TaskRow(task: task, runner: store.runner(for: task.id))
                                 .tag(task.id)
                                 .contextMenu {
-                                    Button("启动") { store.start(task.id) }.disabled(store.runner(for: task.id).state.isActive)
-                                    Button("停止") { store.stop(task.id) }.disabled(!store.runner(for: task.id).state.isActive)
-                                    Button("编辑…") { editingTask = task }.disabled(store.runner(for: task.id).state.isActive)
-                                    Button("删除…", role: .destructive) { deletingTask = task }.disabled(store.runner(for: task.id).state.isActive)
+                                    Button(String(localized: "Start")) { store.start(task.id) }.disabled(store.runner(for: task.id).state.isActive)
+                                    Button(String(localized: "Stop")) { store.stop(task.id) }.disabled(!store.runner(for: task.id).state.isActive)
+                                    Button(String(localized: "Edit…")) { editingTask = task }.disabled(store.runner(for: task.id).state.isActive)
+                                    Button(String(localized: "Delete…"), role: .destructive) { deletingTask = task }.disabled(store.runner(for: task.id).state.isActive)
                                 }
                         }
                     }
@@ -35,19 +35,19 @@ struct ContentView: View {
                 .listStyle(.sidebar)
                 VStack(alignment: .leading, spacing: 8) {
                     Label {
-                        Text("\(store.runningCount) 个任务运行中").foregroundStyle(.primary)
+                        Text(String(localized: "Running tasks: \(store.runningCount)")).foregroundStyle(.primary)
                     } icon: {
                         Image(systemName: "circle.fill")
                             .foregroundStyle(store.runningCount > 0 ? .green : .secondary)
                     }
                     .font(.caption)
-                    Text("关闭窗口后继续运行。\n从菜单栏随时回来。")
+                    Text(String(localized: "Tasks keep running when this window closes.\nReturn from the menu bar anytime."))
                         .font(.caption).foregroundStyle(.secondary)
-                    Button("打开登录项设置", systemImage: "arrow.up.forward.app") {
+                    Button(String(localized: "Open Login Items Settings"), systemImage: "arrow.up.forward.app") {
                         if let url = URL(string: "x-apple.systempreferences:com.apple.LoginItems-Settings.extension") { NSWorkspace.shared.open(url) }
                     }
                     .font(.caption).buttonStyle(.link)
-                    .help("将 AutoShell 手动添加到系统登录项")
+                    .help(String(localized: "Add AutoShell to your login items manually"))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
@@ -60,11 +60,11 @@ struct ContentView: View {
                     .id(task.id)
             } else {
                 ContentUnavailableView {
-                    Label(store.tasks.isEmpty ? "让命令常驻，让 Terminal 自由" : "选择一个任务", systemImage: "terminal")
+                    Label(store.tasks.isEmpty ? String(localized: "Keep commands running. Free your Terminal.") : String(localized: "Select a task"), systemImage: "terminal")
                 } description: {
-                    Text(store.tasks.isEmpty ? "添加 GitHub Runner、开发服务或其他常驻命令。\n下次打开 AutoShell，它们就能自动启动。" : "查看运行状态、管理任务和阅读日志。")
+                    Text(store.tasks.isEmpty ? String(localized: "Add GitHub runners, development servers, or other long-running commands.\nThey can start automatically the next time AutoShell opens.") : String(localized: "Check status, manage tasks, and read logs."))
                 } actions: {
-                    Button("添加第一个任务", systemImage: "plus") { editingTask = ShellTask() }
+                    Button(String(localized: "Add Your First Task"), systemImage: "plus") { editingTask = ShellTask() }
                         .buttonStyle(.borderedProminent)
                 }
             }
@@ -72,15 +72,15 @@ struct ContentView: View {
         .sheet(item: $editingTask) { task in
             TaskEditor(task: task, isNew: !store.tasks.contains(where: { $0.id == task.id })) { try store.save($0) }
         }
-        .alert("删除任务？", isPresented: Binding(get: { deletingTask != nil }, set: { if !$0 { deletingTask = nil } })) {
-            Button("取消", role: .cancel) { deletingTask = nil }
-            Button("删除", role: .destructive) {
+        .alert(String(localized: "Delete task?"), isPresented: Binding(get: { deletingTask != nil }, set: { if !$0 { deletingTask = nil } })) {
+            Button(String(localized: "Cancel"), role: .cancel) { deletingTask = nil }
+            Button(String(localized: "Delete"), role: .destructive) {
                 if let task = deletingTask { store.delete(task.id) }
                 deletingTask = nil
             }
-        } message: { Text("删除“\(deletingTask?.name ?? "")”的配置。已有日志会保留在本地。") }
-        .alert("操作未完成", isPresented: Binding(get: { store.errorMessage != nil }, set: { if !$0 { store.errorMessage = nil } })) {
-            Button("好") { store.errorMessage = nil }
+        } message: { Text(String(localized: "Delete the configuration for “\(deletingTask?.name ?? "")”? Existing logs will stay on this Mac.")) }
+        .alert(String(localized: "Action could not be completed"), isPresented: Binding(get: { store.errorMessage != nil }, set: { if !$0 { store.errorMessage = nil } })) {
+            Button(String(localized: "OK")) { store.errorMessage = nil }
         } message: { Text(store.errorMessage ?? "") }
         .frame(minWidth: 830, minHeight: 530)
     }
@@ -99,7 +99,7 @@ struct TaskRow: View {
                 HStack(spacing: 6) {
                     Text(runner.state.label)
                     if task.startsAutomatically {
-                        Image(systemName: "bolt.fill").help("随 App 启动")
+                        Image(systemName: "bolt.fill").help(String(localized: "Starts with the app"))
                     }
                 }
                 .font(.caption).foregroundStyle(.secondary)
@@ -130,33 +130,33 @@ struct TaskDetailView: View {
                                 Image(systemName: runner.state.symbol).foregroundStyle(runner.state.color)
                             }
                             if let pid = runner.pid { Text("PID \(pid)").monospacedDigit().foregroundStyle(.secondary) }
-                            if let code = runner.exitCode { Text("退出码 \(code)").foregroundStyle(.secondary) }
+                            if let code = runner.exitCode { Text(String(localized: "Exit code \(code)")).foregroundStyle(.secondary) }
                         }
                         .font(.callout)
                     }
                     Spacer()
                     Menu {
-                        Button("编辑任务…", action: edit).disabled(runner.state.isActive)
-                        Button("在 Finder 中显示日志") { store.revealLogs(task.id) }
+                        Button(String(localized: "Edit Task…"), action: edit).disabled(runner.state.isActive)
+                        Button(String(localized: "Show Log in Finder")) { store.revealLogs(task.id) }
                         Divider()
-                        Button("删除任务…", role: .destructive, action: delete).disabled(runner.state.isActive)
+                        Button(String(localized: "Delete Task…"), role: .destructive, action: delete).disabled(runner.state.isActive)
                     } label: { Image(systemName: "ellipsis") }
-                    .menuStyle(.borderlessButton).fixedSize().help("更多操作")
+                    .menuStyle(.borderlessButton).fixedSize().help(String(localized: "More Actions"))
                 }
                 HStack(spacing: 10) {
                     if runner.state.isActive {
-                        Button("停止", systemImage: "stop.fill") { store.stop(task.id) }
+                        Button(String(localized: "Stop"), systemImage: "stop.fill") { store.stop(task.id) }
                             .disabled(runner.state == .stopping)
-                        Button("重新启动", systemImage: "arrow.clockwise") { store.restart(task.id) }
+                        Button(String(localized: "Restart"), systemImage: "arrow.clockwise") { store.restart(task.id) }
                             .disabled(runner.state == .stopping)
                     } else {
-                        Button("启动任务", systemImage: "play.fill") { store.start(task.id) }
+                        Button(String(localized: "Start Task"), systemImage: "play.fill") { store.start(task.id) }
                             .buttonStyle(.borderedProminent)
-                        Button("编辑", systemImage: "pencil", action: edit)
+                        Button(String(localized: "Edit"), systemImage: "pencil", action: edit)
                     }
                     Spacer()
                     if let date = runner.startedAt {
-                        Text("启动于 \(date.formatted(date: .omitted, time: .standard))")
+                        Text(String(localized: "Started at \(date.formatted(date: .omitted, time: .standard))"))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                 }
@@ -168,8 +168,8 @@ struct TaskDetailView: View {
                         .font(.caption).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
                         .help(task.expandedDirectory)
                     HStack(spacing: 16) {
-                        Label(task.startsAutomatically ? "随 App 启动" : "手动启动", systemImage: task.startsAutomatically ? "bolt" : "hand.tap")
-                        if task.restartsOnFailure { Label("失败后自动重启", systemImage: "arrow.clockwise") }
+                        Label(task.startsAutomatically ? String(localized: "Starts with the app") : String(localized: "Manual start"), systemImage: task.startsAutomatically ? "bolt" : "hand.tap")
+                        if task.restartsOnFailure { Label(String(localized: "Restart on failure"), systemImage: "arrow.clockwise") }
                     }
                     .font(.caption).foregroundStyle(.secondary)
                 }

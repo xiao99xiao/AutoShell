@@ -71,7 +71,7 @@ struct IntegrationTests {
         try wait { let pid = store.runner(for: longTask.id).pid; return pid != nil && pid != oldPID }
         try check(kill(oldPID!, 0) != 0, "restart finishes previous process before replacement")
         do { try store.save(longTask); throw TaskError.message("active edit accepted") }
-        catch { try check(error.localizedDescription.contains("先停止"), "active task edits rejected") }
+        catch { try check(error.localizedDescription == String(localized: "Stop the task before editing its configuration."), "active task edits rejected") }
         store.restart(longTask.id)
         store.stop(longTask.id)
         try wait { store.runner(for: longTask.id).pid == nil }
@@ -129,7 +129,7 @@ struct IntegrationTests {
         var invalid = makeTask("无效目录", "echo should-not-run")
         invalid.directory = root.appendingPathComponent("missing").path
         do { _ = try invalid.validated(); throw TaskError.message("invalid directory accepted") }
-        catch { try check(error.localizedDescription.contains("目录不存在"), "invalid working directory rejected") }
+        catch { try check(error.localizedDescription == String(localized: "The working directory does not exist. Choose another directory."), "invalid working directory rejected") }
 
         let corruptRoot = root.appendingPathComponent("corrupt")
         try FileManager.default.createDirectory(at: corruptRoot, withIntermediateDirectories: true)

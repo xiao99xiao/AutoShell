@@ -17,31 +17,31 @@ struct LogPanel: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
-                Text("运行日志").font(.headline)
+                Text(String(localized: "Logs")).font(.headline)
                 Spacer()
-                Button(pausedLog == nil ? "暂停显示" : "继续显示", systemImage: pausedLog == nil ? "pause" : "play") {
+                Button(pausedLog == nil ? String(localized: "Pause Display") : String(localized: "Resume Display"), systemImage: pausedLog == nil ? "pause" : "play") {
                     pausedLog = pausedLog == nil ? runner.log : nil
                 }
-                .help("只暂停画面，任务和日志记录继续运行")
-                Button("在 Terminal 查看", systemImage: "arrow.up.forward.app", action: terminal)
+                .help(String(localized: "Pauses the display only. The task and log recording continue."))
+                Button(String(localized: "View in Terminal"), systemImage: "arrow.up.forward.app", action: terminal)
                     .disabled(runner.log.isEmpty)
             }
             .buttonStyle(.borderless)
             .padding(.horizontal, 24).padding(.top, 18).padding(.bottom, 14)
             HStack(spacing: 14) {
-                TextField("搜索日志", text: $search)
+                TextField(String(localized: "Search logs"), text: $search)
                     .textFieldStyle(.roundedBorder)
-                    .accessibilityLabel("搜索日志")
-                Toggle("跟随输出", isOn: $follows).toggleStyle(.checkbox).fixedSize()
+                    .accessibilityLabel(String(localized: "Search logs"))
+                Toggle(String(localized: "Follow Output"), isOn: $follows).toggleStyle(.checkbox).fixedSize()
                 Button {
                     NSPasteboard.general.clearContents()
                     NSPasteboard.general.setString(visibleLog, forType: .string)
                 } label: { Image(systemName: "doc.on.doc") }
-                .buttonStyle(.borderless).help("复制当前显示的日志").accessibilityLabel("复制日志")
+                .buttonStyle(.borderless).help(String(localized: "Copy the displayed log")).accessibilityLabel(String(localized: "Copy Log"))
             }
             .padding(.horizontal, 24).padding(.bottom, 14)
             if runner.log.isEmpty {
-                ContentUnavailableView("还没有输出", systemImage: "text.alignleft", description: Text("启动任务后，标准输出和错误信息会出现在这里。"))
+                ContentUnavailableView(String(localized: "No output yet"), systemImage: "text.alignleft", description: Text(String(localized: "Start the task to see standard output and errors here.")))
                     .frame(maxHeight: .infinity)
             } else if visibleLog.isEmpty {
                 ContentUnavailableView.search(text: search).frame(maxHeight: .infinity)
@@ -53,9 +53,9 @@ struct LogPanel: View {
                 Text(error).font(.caption).foregroundStyle(.red).padding(8)
             }
             HStack {
-                Text(pausedLog != nil ? "显示已暂停 · 后台仍在记录" : "最近 128 KB · 本地日志自动轮转（2 × 5 MB）")
+                Text(pausedLog != nil ? String(localized: "Display paused · Still recording") : String(localized: "Latest 128 KB · Rotating logs (2 × 5 MB)"))
                 Spacer()
-                Text("只读输出").help("需要交互输入的命令请在 Terminal 中运行")
+                Text(String(localized: "Read-only output")).help(String(localized: "Run commands that need interactive input in Terminal"))
             }
             .font(.caption).foregroundStyle(.secondary)
             .padding(.horizontal, 24).padding(.vertical, 12)

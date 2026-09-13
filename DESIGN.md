@@ -7,7 +7,7 @@ description: Native macOS task management with clear status and readable logs.
 
 ## Overview
 
-AutoShell is a native macOS utility in Operate mode. Its interface uses Chinese copy, system typography and colors, SF Symbols, and standard macOS controls. The visual character is restrained and practical, with task status and readable output taking priority.
+AutoShell is a native macOS utility in Operate mode. Its interface uses English source copy with a Simplified Chinese localization, system typography and colors, SF Symbols, and standard macOS controls. The visual character is restrained and practical, with task status and readable output taking priority.
 
 **Key Characteristics:**
 - Native sidebar navigation and focused task details.
@@ -64,7 +64,11 @@ Native controls retain system shapes. The command summary has an 8 pt corner rad
 ## Do's and Don'ts
 
 - **Do** keep status words legible in primary/secondary system text and reserve routine state color for symbols.
-- **Do** preserve selectable logs, native keyboard behavior, and concise Chinese action labels.
+- **Do** preserve selectable logs, native keyboard behavior, and concise localized action labels.
 - **Do** keep output prominent when adding task-management controls.
 - **Don't** introduce fixed color replacements, custom control chrome, decorative dashboards, or gratuitous animation into this utility.
 - **Don't** treat implementation intent as verification: the recorded visual review covers the inspected running-task and compact-window screenshots, not every state or system appearance.
+
+## Localization
+
+English (`en`) is the source and fallback language; Simplified Chinese (`zh-Hans`) is supported through `AutoShell/Localizable.xcstrings`. Use `String(localized:)` for runtime messages, conditional labels, menus, accessibility labels, and app-generated log messages. Preserve task names, paths, commands, and command output verbatim. Follow macOS language preferences instead of forcing a locale. Review long translations in the editor, sidebar footer, and log toolbar.

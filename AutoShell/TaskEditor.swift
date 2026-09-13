@@ -12,50 +12,50 @@ struct TaskEditor: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 6) {
-                Text(isNew ? "添加任务" : "编辑任务").font(.title2.weight(.semibold))
-                Text("配置一次，每次打开 App 自动运行。")
+                Text(isNew ? String(localized: "Add Task") : String(localized: "Edit Task")).font(.title2.weight(.semibold))
+                Text(String(localized: "Configure once. Run automatically when AutoShell opens."))
                     .foregroundStyle(.secondary)
             }.padding(24)
             Divider()
             Form {
                 Section {
-                    TextField("任务名称", text: $task.name, prompt: Text("例如：GitHub Runner"))
+                    TextField(String(localized: "Task Name"), text: $task.name, prompt: Text(String(localized: "e.g. GitHub Runner")))
                         .accessibilityIdentifier("taskName")
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Shell 命令")
+                        Text(String(localized: "Shell Command"))
                         TextEditor(text: $task.command)
                             .font(.system(.body, design: .monospaced))
                             .frame(height: 90)
                             .padding(6)
                             .background(.background, in: RoundedRectangle(cornerRadius: 6))
-                            .accessibilityLabel("Shell 命令")
+                            .accessibilityLabel(String(localized: "Shell Command"))
                             .accessibilityIdentifier("taskCommand")
-                        Text("例如 ./run.sh。使用前台常驻命令，不要添加 & 或 nohup。")
+                        Text(String(localized: "For example, ./run.sh. Keep commands in the foreground; do not add & or nohup."))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     HStack {
-                        TextField("工作目录", text: $task.directory)
+                        TextField(String(localized: "Working Directory"), text: $task.directory)
                             .accessibilityIdentifier("taskDirectory")
-                        Button("选择…", action: chooseDirectory)
+                        Button(String(localized: "Choose…"), action: chooseDirectory)
                     }
                 }
                 Section {
-                    Toggle("随 AutoShell 启动", isOn: $task.startsAutomatically)
-                    Toggle("失败后自动重启", isOn: $task.restartsOnFailure)
-                    Text("自动重启等待 5–60 秒；正常退出或手动停止不会触发。")
+                    Toggle(String(localized: "Start with AutoShell"), isOn: $task.startsAutomatically)
+                    Toggle(String(localized: "Restart on failure"), isOn: $task.restartsOnFailure)
+                    Text(String(localized: "Waits 5–60 seconds before restarting. Normal exits and manual stops do not trigger a restart."))
                         .font(.caption).foregroundStyle(.secondary)
                 }
-                DisclosureGroup("高级设置", isExpanded: $advanced) {
-                    TextField("Shell 路径", text: $task.shell)
-                    Text("以非交互登录 Shell 运行，会读取登录配置；不会自动读取 .zshrc。")
+                DisclosureGroup(String(localized: "Advanced Settings"), isExpanded: $advanced) {
+                    TextField(String(localized: "Shell Path"), text: $task.shell)
+                    Text(String(localized: "Runs a noninteractive login shell. Loads login configuration, but not .zshrc."))
                         .font(.caption).foregroundStyle(.secondary)
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("环境变量（每行 KEY=value）")
+                        Text(String(localized: "Environment Variables (one KEY=value per line)"))
                         TextEditor(text: $task.environment)
                             .font(.system(.caption, design: .monospaced))
                             .frame(height: 70)
-                            .accessibilityLabel("环境变量")
-                        Text("值按原样传入，无需引号。配置保存在本机，请勿填写需要加密保管的密钥。")
+                            .accessibilityLabel(String(localized: "Environment Variables"))
+                        Text(String(localized: "Values are passed literally; no quotes needed. Configuration is stored locally in plain text."))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                 }
@@ -64,11 +64,11 @@ struct TaskEditor: View {
             if let error { Label(error, systemImage: "exclamationmark.triangle").foregroundStyle(.red).padding(.horizontal, 24).padding(.bottom, 12) }
             Divider()
             HStack {
-                Text("保存不会立即运行命令。")
+                Text(String(localized: "Saving does not start the command."))
                     .font(.caption).foregroundStyle(.secondary)
                 Spacer()
-                Button("取消") { dismiss() }.keyboardShortcut(.cancelAction)
-                Button("保存任务") {
+                Button(String(localized: "Cancel")) { dismiss() }.keyboardShortcut(.cancelAction)
+                Button(String(localized: "Save Task")) {
                     do { try save(task); dismiss() }
                     catch { self.error = error.localizedDescription }
                 }
@@ -84,7 +84,7 @@ struct TaskEditor: View {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = false
-        panel.prompt = "选择工作目录"
+        panel.prompt = String(localized: "Choose Working Directory")
         panel.directoryURL = URL(fileURLWithPath: task.expandedDirectory)
         if panel.runModal() == .OK, let url = panel.url { task.directory = url.path }
     }
