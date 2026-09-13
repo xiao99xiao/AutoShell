@@ -6,6 +6,10 @@ English · [简体中文](README.zh-Hans.md)
 
 A native macOS menu bar app for managing long-running shell commands, including local GitHub Actions runners and development servers.
 
+## Download
+
+Download the DMG from [GitHub Releases](https://github.com/xiao99xiao/AutoShell/releases/latest), then drag AutoShell into Applications. Requires macOS 26.5 or later; supports Apple silicon and Intel Macs.
+
 ## Getting started
 
 1. Open the Xcode project, select the **AutoShell** scheme, and run the app. The task manager opens on first launch.

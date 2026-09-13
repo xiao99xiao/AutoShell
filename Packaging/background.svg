@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="740" height="460" viewBox="0 0 740 460">
+  <rect width="740" height="460" fill="#F4F8F6"/>
+  <path d="M0 0H740V116H0Z" fill="#EBF3EF"/>
+  <text x="370" y="61" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="34" font-weight="600" fill="#142523">AutoShell</text>
+  <text x="370" y="89" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#566C62">Keep your commands running.</text>
+  <rect x="116" y="154" width="168" height="164" rx="30" fill="#FFFFFF" stroke="#DDE9E2"/>
+  <rect x="456" y="154" width="168" height="164" rx="30" fill="#FFFFFF" stroke="#DDE9E2"/>
+  <path d="M337 232H399M386 219L399 232L386 245" fill="none" stroke="#499676" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="370" y="390" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="21" font-weight="500" fill="#142523">Drag AutoShell into Applications</text>
+  <text x="370" y="418" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#566C62">Then open AutoShell from Applications to get started.</text>
+</svg>

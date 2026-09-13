@@ -14,6 +14,10 @@
 
 ## 使用
 
+从 [GitHub Releases](https://github.com/xiao99xiao/AutoShell/releases/latest) 下载 DMG，将 AutoShell 拖入 Applications。需要 macOS 26.5 或更新版本，支持 Apple 芯片和 Intel Mac。
+
+以下为从源码运行的步骤：
+
 1. 在 Xcode 中选择 AutoShell scheme，运行 App。首次启动会打开管理窗口。
 2. 点击「添加任务」，填写名称、Shell 命令和工作目录。
 3. 勾选「随 AutoShell 启动」，保存后点击「启动任务」做首次验证。保存本身不会执行命令。
