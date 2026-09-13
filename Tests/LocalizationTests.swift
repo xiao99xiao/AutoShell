@@ -20,6 +20,17 @@ struct LocalizationTests {
         try check(String(localized: "Scheduled restart is due.") == (chinese ? "已到定时重启时间。" : "Scheduled restart is due."), "scheduled restart log message")
         let nextDate = "2030/01/01 12:30"
         try check(String(localized: "Next restart: \(nextDate)") == (chinese ? "下次重启：2030/01/01 12:30" : "Next restart: 2030/01/01 12:30"), "scheduled restart date interpolation")
+        let multiDay = TaskTimeFormatting.duration(2 * 86400 + 3 * 3600 + 4 * 60 + 5)
+        print("Multi-day duration:", multiDay)
+        try check(multiDay.contains(chinese ? "2天" : "2 days"), "multi-day duration includes days")
+        try check(multiDay.contains(chinese ? "3小时" : "3 hr") && multiDay.contains(chinese ? "4分钟" : "4 min") && multiDay.contains(chinese ? "5秒" : "5 sec"), "duration preserves hours minutes and seconds")
+        try check(TaskTimeFormatting.duration(86400) == (chinese ? "1天" : "1 day"), "24 hours displays as one day")
+        try check(TaskTimeFormatting.duration(86399).contains(chinese ? "23小时" : "23 hr"), "duration below one day stays in hours")
+        let now = Date(timeIntervalSince1970: 0)
+        try check(TaskTimeFormatting.remaining(until: now.addingTimeInterval(86400.2), now: now) == TaskTimeFormatting.duration(86401), "countdown rounds remaining fractions up across day boundary")
+        try check(TaskTimeFormatting.remaining(until: now.addingTimeInterval(-1), now: now) == TaskTimeFormatting.duration(0), "overdue countdown never becomes negative")
+        try check(String(localized: "Remaining: \(multiDay)") == (chinese ? "剩余：\(multiDay)" : "Remaining: \(multiDay)"), "localized multi-day countdown")
+        try check(String(localized: "Running for \(multiDay)") == (chinese ? "已运行 \(multiDay)" : "Running for \(multiDay)"), "localized multi-day running duration")
         for count in [0, 1, 5] {
             let message = String(localized: "Running tasks: \(count)")
             try check(message == (chinese ? "\(count) 个任务运行中" : "Running tasks: \(count)"), "interpolated count \(count)")

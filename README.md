@@ -45,7 +45,7 @@ UI labels, menus, accessibility text, validation errors, and AutoShell-generated
 
 Select a task, then choose **Configure…** beside **Automatic Restart**. Enable **Restart periodically** and enter an interval in seconds, minutes, hours, or days (at least one second). You can change or disable the schedule while the task is running. The interval is saved for each task.
 
-Saving the setting or starting the task begins a fresh interval. When it is due, AutoShell stops the current process group, waits for it to exit, then starts a new process and resets the interval. The task details show the next restart time, and the log records each scheduled restart.
+Saving the setting or starting the task begins a fresh interval. When it is due, AutoShell stops the current process group, waits for it to exit, then starts a new process and resets the interval. The task details show full start/restart dates, elapsed running time, and a live restart countdown. Durations include days, hours, minutes, and seconds. The log records each scheduled restart.
 
 Closing the window keeps the schedule running. Stopping a task or quitting AutoShell cancels its countdown; the saved interval resumes when the task starts again. Unexpected exits still follow **Restart on failure**, which is off by default. AutoShell must remain running; it does not wake your Mac. After sleep, an overdue restart runs once, followed by a fresh interval.
 

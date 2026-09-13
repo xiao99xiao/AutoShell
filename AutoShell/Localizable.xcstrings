@@ -1105,6 +1105,22 @@
         }
       }
     },
+    "Remaining: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remaining: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剩余：%@"
+          }
+        }
+      }
+    },
     "Restart": {
       "localizations": {
         "en": {
@@ -1229,6 +1245,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "运行中"
+          }
+        }
+      }
+    },
+    "Running for %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running for %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已运行 %@"
           }
         }
       }

@@ -156,8 +156,16 @@ struct TaskDetailView: View {
                     }
                     Spacer()
                     if let date = runner.startedAt {
-                        Text(String(localized: "Started at \(date.formatted(date: .omitted, time: .standard))"))
-                            .font(.caption).foregroundStyle(.secondary)
+                        VStack(alignment: .trailing, spacing: 4) {
+                            Text(String(localized: "Started at \(date.formatted(date: .abbreviated, time: .standard))"))
+                            if runner.state == .running || runner.state == .stopping {
+                                TimelineView(.periodic(from: .now, by: 1)) { context in
+                                    Text(String(localized: "Running for \(TaskTimeFormatting.duration(context.date.timeIntervalSince(date)))"))
+                                        .monospacedDigit()
+                                }
+                            }
+                        }
+                        .font(.caption).foregroundStyle(.secondary)
                     }
                 }
                 VStack(alignment: .leading, spacing: 8) {
@@ -183,6 +191,10 @@ struct TaskDetailView: View {
                             Text(String(localized: "Every \(interval)"))
                             if let date = store.scheduledRestarts[task.id] {
                                 Text(String(localized: "Next restart: \(date.formatted(date: .abbreviated, time: .standard))"))
+                                TimelineView(.periodic(from: .now, by: 1)) { context in
+                                    Text(String(localized: "Remaining: \(TaskTimeFormatting.remaining(until: date, now: context.date))"))
+                                        .monospacedDigit()
+                                }
                             } else {
                                 Text(String(localized: "Resumes when the task starts"))
                             }

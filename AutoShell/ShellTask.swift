@@ -15,11 +15,7 @@ struct ShellTask: Codable, Identifiable, Equatable {
 
     var restartIntervalDescription: String? {
         guard let restartInterval else { return nil }
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.day, .hour, .minute, .second]
-        formatter.unitsStyle = .short
-        formatter.maximumUnitCount = 2
-        return formatter.string(from: restartInterval)
+        return TaskTimeFormatting.duration(restartInterval)
     }
 
     func validated() throws -> ShellTask {
@@ -77,6 +73,25 @@ struct ShellTask: Codable, Identifiable, Equatable {
             values[key] = String(line[line.index(after: equals)...])
         }
         return values
+    }
+}
+
+enum TaskTimeFormatting {
+    static func duration(_ interval: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.day, .hour, .minute, .second]
+        formatter.unitsStyle = .short
+        formatter.maximumUnitCount = 4
+        formatter.zeroFormattingBehavior = .dropAll
+        // Duration days are always 24 hours, independent of daylight-saving changes.
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        formatter.calendar = calendar
+        return formatter.string(from: max(0, interval.rounded(.down))) ?? ""
+    }
+
+    static func remaining(until deadline: Date, now: Date) -> String {
+        duration(max(0, deadline.timeIntervalSince(now)).rounded(.up))
     }
 }
 
