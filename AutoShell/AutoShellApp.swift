@@ -10,7 +10,13 @@ struct AutoShellApp: App {
         MenuBarExtra {
             MenuContent(store: store)
         } label: {
-            Label("AutoShell · \(store.runningCount) 个运行中", systemImage: store.failedCount > 0 ? "exclamationmark.square" : "terminal")
+            Label {
+                Text("AutoShell · \(store.runningCount) 个运行中")
+            } icon: {
+                Image(store.failedCount > 0 ? "MenuBarIconAlert" : "MenuBarIcon")
+                    .renderingMode(.template)
+            }
+            .accessibilityLabel("AutoShell · \(store.runningCount) 个运行中 · \(store.failedCount) 个失败")
         }
         .menuBarExtraStyle(.menu)
     }

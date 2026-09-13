@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>AutoShell parallel A</title>
+  <desc>A geometric A formed from a broad rising lane and an angled lane with a forward crossbar.</desc>
+  <g id="app-tile" fill="#142523">
+    <rect x="32" y="32" width="448" height="448" rx="100"/>
+  </g>
+  <g id="parallel-a-monogram" fill="#67E8B5">
+    <path id="rising-lane" d="M124 356 224 156H282L182 356Z"/>
+    <path id="forward-lane" d="M276 168 388 356H328L290 292H228L252 244H262L250 222Z"/>
+  </g>
+</svg>

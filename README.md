@@ -1,5 +1,7 @@
 # AutoShell
 
+<img src="logos/export/logo-192.png" width="96" height="96" alt="AutoShell logo">
+
 一个原生 SwiftUI macOS 菜单栏工具，用于管理本地常驻 Shell 任务。
 
 ## 使用

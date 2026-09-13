@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <title>AutoShell — Always Ready</title>
+  <desc>A shell prompt in an open terminal frame with a persistent service indicator.</desc>
+  <g id="app-tile">
+    <rect x="32" y="32" width="448" height="448" rx="100" fill="#142523"/>
+  </g>
+  <g id="terminal-frame" stroke="#67E8B5" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M302 136H166C141 136 120 157 120 182V330C120 355 141 376 166 376H346C371 376 392 355 392 330V258"/>
+  </g>
+  <g id="service-indicator" fill="#67E8B5">
+    <circle cx="392" cy="166" r="23"/>
+  </g>
+  <g id="shell-prompt" stroke="#67E8B5" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M179 215L226 256L179 297"/>
+    <path d="M278 297H321"/>
+  </g>
+</svg>

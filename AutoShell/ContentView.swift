@@ -9,7 +9,7 @@ struct ContentView: View {
         NavigationSplitView {
             VStack(spacing: 0) {
                 HStack {
-                    Label("AutoShell", systemImage: "terminal")
+                    Label("AutoShell", image: "MenuBarIcon")
                         .font(.title3.weight(.semibold))
                     Spacer()
                     Button { editingTask = ShellTask() } label: { Image(systemName: "plus") }
